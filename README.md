@@ -1,6 +1,6 @@
 # whois-check v1.0
 
-Return domain registrar info using WHOIS DB and Li Kexian's whois library
+Return domain registrar info and resolved IP (or Reverse IP) using WHOIS DB and Li Kexian's whois library
 
 The binary for MacOS (compiled on Sonoma 14.x) is included in this repository.
 

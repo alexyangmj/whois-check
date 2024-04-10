@@ -10,8 +10,6 @@ import (
 	"github.com/likexian/whois-parser"
     
 )
-var Ops bool
-
 
 func IsIpv4Net(host string) bool {
    return net.ParseIP(host) != nil
@@ -21,21 +19,31 @@ func IsIpv6Net(host string) bool {
    return net.ParseIP(host) != nil
 }
 
-func main() { 
+var Ops bool
+
+func main() {
+    
+    Banner := "whois-check v1.1\n"
+    Banner = Banner + "Last Update: 10 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n\n"
+    Banner = Banner + "Usage: whois-check [ipv4 | ipv6 | domain.com]\n"
+
+    var input   string
+    
     defer func() {
         if r := recover(); r != nil {
-            if !Ops {
-                Banner := "whois-check v1.0\n\n"
-                Banner = Banner + "Last Update: 10 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n"
-                Banner = Banner + "Usage: whois-check [ipv4 | ipv6 | domain.com]"
-                fmt.Println(Banner)
-            }
+            fmt.Println(Banner) 
         }
     }()
+
+    if len(os.Args) == 1  { 
+        fmt.Println(Banner)
+        return
+    } 
     
-    input := os.Args[1]
+    if len(os.Args) == 2 { input = os.Args[1] }
+    
     if !(strings.Contains(input, ".") || strings.Contains(input, ":")) {
-        fmt.Println("Usage: whois-check [ipv4 | ipv6 | domain.com]")
+        fmt.Println(Banner)
         return
     }
     

@@ -55,28 +55,28 @@ Example:
    
 Output:
     Resolved IP:                104.244.42.1
-    Status: 			        [clienttransferprohibited serverdeleteprohibited servertransferprohibited serverupdateprohibited]
-    Created: 			        2000-01-21T16:28:17Z
-    Updated: 			        2024-01-17T06:10:05Z
-    Expiration: 	            2025-01-21T16:28:17Z
-    ID: 				        18195971_DOMAIN_COM-VRSN
-    Name Servers: 		        [a.r06.twtrdns.net a.u06.twtrdns.net b.r06.twtrdns.net b.u06.twtrdns.net c.r06.twtrdns.net c.u06.twtrdns.net d.r06.twtrdns.net d.u06.twtrdns.net]
-    Whois Server: 			    whois.corporatedomains.com
-    Registrar Name: 		    CSC Corporate Domains, Inc.
-    Registrant Name: 		    Twitter, Inc.
-    Registrant Email: 		    domains@twitter.com
-    Registrant Phone: 		    +1.4152229670
+    Status:                     [clienttransferprohibited serverdeleteprohibited servertransferprohibited serverupdateprohibited]
+    Created:                    2000-01-21T16:28:17Z
+    Updated:                    2024-01-17T06:10:05Z
+    Expiration:                 2025-01-21T16:28:17Z
+    ID:                         18195971_DOMAIN_COM-VRSN
+    Name Servers:               [a.r06.twtrdns.net a.u06.twtrdns.net b.r06.twtrdns.net b.u06.twtrdns.net c.r06.twtrdns.net c.u06.twtrdns.net d.r06.twtrdns.net d.u06.twtrdns.net]
+    Whois Server:               whois.corporatedomains.com
+    Registrar Name:             CSC Corporate Domains, Inc.
+    Registrant Name:            Twitter, Inc.
+    Registrant Email:           domains@twitter.com
+    Registrant Phone:           +1.4152229670
     Registrant Organization:    Twitter, Inc.
-    Registrant Address: 	    1355 Market Street
-    Registrant City: 		    San Francisco
-    Registrant Province: 		CA
-    Registrant Country: 		US
-    Registrant Postal Code: 	94103
-    Technical Name: 		    Tech Admin
-    Technical Email: 		    domains-tech@twitter.com
-    Technical Phone: 		    +1.4152229670
-    Administrative Name: 		Domain Admin
-    Administrative Email: 		domains@twitter.com
+    Registrant Address:         1355 Market Street
+    Registrant City:            San Francisco
+    Registrant Province:        CA
+    Registrant Country:         US
+    Registrant Postal Code:     94103
+    Technical Name:             Tech Admin
+    Technical Email:            domains-tech@twitter.com
+    Technical Phone:            +1.4152229670
+    Administrative Name:        Domain Admin
+    Administrative Email:       domains@twitter.com
 ```
 
 # If you have any issue and need a little help

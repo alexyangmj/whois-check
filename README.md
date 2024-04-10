@@ -48,7 +48,7 @@ Output:
     % Query time: 1081 msec
     % WHEN: Wed Apr 10 23:13:33 +08 2024
 
-    Reverse PTR Record: 	 [nd-in-f106.1e100.net.]
+    Reverse PTR Record: [nd-in-f106.1e100.net.]
 
 Example:
    % % whois-check twitter.com

@@ -5,7 +5,7 @@ Return domain registrar info and resolved IP (or Reverse IP) using WHOIS DB and 
 The binary for MacOS (compiled on Sonoma 14.x) is included in this repository.
 
 ```
-whois-check v1.1
+whois-check v1.1c
 Last Update: 10 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)
 
 Usage: whois-check [ipv4 | ipv6 | domain.com]

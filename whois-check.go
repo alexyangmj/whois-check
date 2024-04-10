@@ -23,7 +23,7 @@ var Ops bool
 
 func main() {
     
-    Banner := "whois-check v1.1\n"
+    Banner := "whois-check v1.1c\n"
     Banner = Banner + "Last Update: 10 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n\n"
     Banner = Banner + "Usage: whois-check [ipv4 | ipv6 | domain.com]\n"
 
@@ -31,7 +31,8 @@ func main() {
     
     defer func() {
         if r := recover(); r != nil {
-            fmt.Println(Banner) 
+            //fmt.Println(Banner)
+            fmt.Println("Program Terminated Abnormally! caught by a bug?")
         }
     }()
 
@@ -80,11 +81,13 @@ func main() {
 
     fmt.Println("Status: \t\t\t", resultP.Domain.Status)
     Ops = true
+    if resultP.Domain.DNSSec { fmt.Println("DNSSec: \t\t\t", resultP.Domain.DNSSec) }
     if len(resultP.Domain.CreatedDate) > 0 { fmt.Println("Created: \t\t\t", resultP.Domain.CreatedDate) }
+    if len(resultP.Domain.UpdatedDate) > 0 { fmt.Println("Updated: \t\t\t", resultP.Domain.UpdatedDate) }    
     if len(resultP.Domain.ExpirationDate) > 0 { fmt.Println("Expiration: \t\t\t", resultP.Domain.ExpirationDate) }
-    if len(resultP.Domain.NameServers) > 0 { fmt.Println("Name Server: \t\t\t", resultP.Domain.NameServers) }
+    if len(resultP.Domain.ID) > 0 { fmt.Println("ID: \t\t\t\t", resultP.Domain.ID) }
+    if len(resultP.Domain.NameServers) > 0 { fmt.Println("Name Servers: \t\t\t", resultP.Domain.NameServers) }
     if len(resultP.Domain.WhoisServer) > 0 { fmt.Println("Whois Server: \t\t\t", resultP.Domain.WhoisServer) }
-    //if len(resultP.Domain.DNSSEC) > 0 { fmt.Println("DNSSEC: \t\t\t", resultP.Domain.DNSSEC) }
     if len(resultP.Registrar.Name) > 0 { fmt.Println("Registrar Name: \t\t", resultP.Registrar.Name) }
     if len(resultP.Registrant.Name) > 0 { fmt.Println("Registrant Name: \t\t", resultP.Registrant.Name) }
     if len(resultP.Registrant.Email) > 0 { fmt.Println("Registrant Email: \t\t", resultP.Registrant.Email) }
@@ -103,43 +106,50 @@ func main() {
 }
 
 /*
-type Contact struct {
-    ID           string `json:"id,omitempty"`
-    Name         string `json:"name,omitempty"`
-    Organization string `json:"organization,omitempty"`
-    Street       string `json:"street,omitempty"`
-    City         string `json:"city,omitempty"`
-    Province     string `json:"province,omitempty"`
-    PostalCode   string `json:"postal_code,omitempty"`
-    Country      string `json:"country,omitempty"`
-    Phone        string `json:"phone,omitempty"`
-    PhoneExt     string `json:"phone_ext,omitempty"`
-    Fax          string `json:"fax,omitempty"`
-    FaxExt       string `json:"fax_ext,omitempty"`
-    Email        string `json:"email,omitempty"`
-    ReferralURL  string `json:"referral_url,omitempty"`
-}
-
-type Domain struct {
-    ID             string `json:"id,omitempty"`
-    Domain         string `json:"domain,omitempty"`
-    Name           string `json:"name,omitempty"`
-    Extension      string `json:"extension,omitempty"`
-    Status         string `json:"status,omitempty"`
-    DNSSEC         string `json:"dnssec,omitempty"`
-    WhoisServer    string `json:"whois_server,omitempty"`
-    NameServers    string `json:"name_servers,omitempty"`
-    CreatedDate    string `json:"created_date,omitempty"`
-    UpdatedDate    string `json:"updated_date,omitempty"`
-    ExpirationDate string `json:"expiration_date,omitempty"`
-}
-
+// WhoisInfo storing domain whois info
 type WhoisInfo struct {
-    Domain         *Domain  `json:"domain,omitempty"`
-    Registrar      *Contact `json:"registrar,omitempty"`
-    Registrant     *Contact `json:"registrant,omitempty"`
-    Administrative *Contact `json:"administrative,omitempty"`
-    Technical      *Contact `json:"technical,omitempty"`
-    Billing        *Contact `json:"billing,omitempty"`
+	Domain         *Domain  `json:"domain,omitempty"`
+	Registrar      *Contact `json:"registrar,omitempty"`
+	Registrant     *Contact `json:"registrant,omitempty"`
+	Administrative *Contact `json:"administrative,omitempty"`
+	Technical      *Contact `json:"technical,omitempty"`
+	Billing        *Contact `json:"billing,omitempty"`
+}
+
+// Domain storing domain name info
+type Domain struct {
+	ID                   string     `json:"id,omitempty"`
+	Domain               string     `json:"domain,omitempty"`
+	Punycode             string     `json:"punycode,omitempty"`
+	Name                 string     `json:"name,omitempty"`
+	Extension            string     `json:"extension,omitempty"`
+	WhoisServer          string     `json:"whois_server,omitempty"`
+	Status               []string   `json:"status,omitempty"`
+	NameServers          []string   `json:"name_servers,omitempty"`
+	DNSSec               bool       `json:"dnssec,omitempty"`
+	CreatedDate          string     `json:"created_date,omitempty"`
+	CreatedDateInTime    *time.Time `json:"created_date_in_time,omitempty"`
+	UpdatedDate          string     `json:"updated_date,omitempty"`
+	UpdatedDateInTime    *time.Time `json:"updated_date_in_time,omitempty"`
+	ExpirationDate       string     `json:"expiration_date,omitempty"`
+	ExpirationDateInTime *time.Time `json:"expiration_date_in_time,omitempty"`
+}
+
+// Contact storing domain contact info
+type Contact struct {
+	ID           string `json:"id,omitempty"`
+	Name         string `json:"name,omitempty"`
+	Organization string `json:"organization,omitempty"`
+	Street       string `json:"street,omitempty"`
+	City         string `json:"city,omitempty"`
+	Province     string `json:"province,omitempty"`
+	PostalCode   string `json:"postal_code,omitempty"`
+	Country      string `json:"country,omitempty"`
+	Phone        string `json:"phone,omitempty"`
+	PhoneExt     string `json:"phone_ext,omitempty"`
+	Fax          string `json:"fax,omitempty"`
+	FaxExt       string `json:"fax_ext,omitempty"`
+	Email        string `json:"email,omitempty"`
+	ReferralURL  string `json:"referral_url,omitempty"`
 }
 */

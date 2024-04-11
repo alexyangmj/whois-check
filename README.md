@@ -5,13 +5,48 @@ Return domain registrar info and resolved IP (or Reverse IP) using WHOIS DB and 
 The binary for MacOS (compiled on Sonoma 14.x) is included in this repository.
 
 ```
-whois-check v1.1c
-Last Update: 10 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)
+whois-check v1.2
+Last Update: 12 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)
 
-Usage: whois-check [ipv4 | ipv6 | domain.com]
+Usage for Single IP query:
+    whois-check [ipv4 | ipv6 | domain.com]
+
+Optional_Switch for output format (FOR DOMAIN ONLY):
+    S   Show only resolved IP & domain status
+    c   Show only essential information
+    N   Show only resolved IP, registrant name, organization & country
+    T   Show only created, updated and expiration date
 
 Example:
-   % whois-check 2607:f8b0:4003:c00::6a
+   whois-check twitter.com
+   whois-check google.com c
+   whois-check youtube.com N
+   whois-check netflix.com T
+
+Example:
+    % whois-check google.com T
+Output:
+    Created:                   1997-09-15T04:00:00Z
+    Updated:                   2019-09-09T15:39:04Z
+    Expiration:                2028-09-14T04:00:00Z
+
+Example:
+    % whois-check twitter.com c
+   
+Output:
+    Resolved IP:               104.244.42.65
+    Created:                   2000-01-21T16:28:17Z
+    Updated:                   2024-01-17T06:10:05Z
+    Expiration:                2025-01-21T16:28:17Z
+    Name Servers:              [a.r06.twtrdns.net a.u06.twtrdns.net b.r06.twtrdns.net b.u06.twtrdns.net c.r06.twtrdns.net c.u06.twtrdns.net d.r06.twtrdns.net d.u06.twtrdns.net]
+    Whois Server:              whois.corporatedomains.com
+    Registrar Name:            CSC Corporate Domains, Inc.
+    Registrant Name:           Twitter, Inc.
+    Registrant Organization:   Twitter, Inc.
+    Registrant Country:        US
+
+Example:
+    % whois-check 2607:f8b0:4003:c00::6a
 
 Output:
     NetRange:       2607:F8B0:: - 2607:F8B0:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF
@@ -49,34 +84,6 @@ Output:
     % WHEN: Wed Apr 10 23:13:33 +08 2024
 
     Reverse PTR Record: [nd-in-f106.1e100.net.]
-
-Example:
-   % % whois-check twitter.com
-   
-Output:
-    Resolved IP:                104.244.42.1
-    Status:                     [clienttransferprohibited serverdeleteprohibited servertransferprohibited serverupdateprohibited]
-    Created:                    2000-01-21T16:28:17Z
-    Updated:                    2024-01-17T06:10:05Z
-    Expiration:                 2025-01-21T16:28:17Z
-    ID:                         18195971_DOMAIN_COM-VRSN
-    Name Servers:               [a.r06.twtrdns.net a.u06.twtrdns.net b.r06.twtrdns.net b.u06.twtrdns.net c.r06.twtrdns.net c.u06.twtrdns.net d.r06.twtrdns.net d.u06.twtrdns.net]
-    Whois Server:               whois.corporatedomains.com
-    Registrar Name:             CSC Corporate Domains, Inc.
-    Registrant Name:            Twitter, Inc.
-    Registrant Email:           domains@twitter.com
-    Registrant Phone:           +1.4152229670
-    Registrant Organization:    Twitter, Inc.
-    Registrant Address:         1355 Market Street
-    Registrant City:            San Francisco
-    Registrant Province:        CA
-    Registrant Country:         US
-    Registrant Postal Code:     94103
-    Technical Name:             Tech Admin
-    Technical Email:            domains-tech@twitter.com
-    Technical Phone:            +1.4152229670
-    Administrative Name:        Domain Admin
-    Administrative Email:       domains@twitter.com
 ```
 
 # If you have any issue and need a little help

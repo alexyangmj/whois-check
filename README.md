@@ -5,7 +5,7 @@ Return domain registrar info and resolved IP (or Reverse IP) using WHOIS DB and 
 The binary for MacOS (compiled on Sonoma 14.x) is included in this repository.
 
 ```
-whois-check v1.3
+whois-check v1.4
 Last Update: 13 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)
 
 Usage for Single IP query:
@@ -23,8 +23,25 @@ Example:
    whois-check youtube.com N
    whois-check netflix.com T
 
+Optional_Switch for output format (FOR IPv4/v6 ONLY):
+    C   Show only CIDR
+    R   Show only reverse PTR record
+
+Example:
+    %  whois-check 20.231.239.246 C
+
+Output:
+    CIDR:           20.192.0.0/10
+
+Example:
+    % whois-check 142.251.12.94 R
+
+Output:
+    Reverse PTR Record:  [se-in-f94.1e100.net.]
+
 Example:
     % whois-check google.com T
+
 Output:
     Created:                   1997-09-15T04:00:00Z
     Updated:                   2019-09-09T15:39:04Z

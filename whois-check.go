@@ -21,7 +21,7 @@ func IsIpv6Net(host string) bool {
 
 func main() {
     
-    Banner := "whois-check v1.3\n"
+    Banner := "whois-check v1.4\n"
     Banner = Banner + "Last Update: 13 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n\n"
     Banner = Banner + "Usage for Single IP query:\n"
     Banner = Banner + "    whois-check [ipv4 | ipv6 | domain.com]\n\n"
@@ -35,6 +35,13 @@ func main() {
     Banner = Banner + "   whois-check google.com c\n"
     Banner = Banner + "   whois-check youtube.com N\n"
     Banner = Banner + "   whois-check netflix.com T\n\n"
+    Banner = Banner + "Optional_Switch for output format (FOR IPv4/v6 ONLY):\n"
+    Banner = Banner + "    C   Show only CIDR\n"    
+    Banner = Banner + "    R   Show only reverse PTR record\n\n"
+    Banner = Banner + "Example:\n"
+    Banner = Banner + "   whois-check 20.231.239.246 C\n"
+    Banner = Banner + "   whois-check 142.251.12.94 R\n"
+    
     //Banner = Banner + "Usage for Bulk IP query:\n"
     //Banner = Banner + "   whois-check [inputfile.txt] --> file extension must be .txt\n\n"
     //Banner = Banner + "Example:\n"
@@ -78,10 +85,25 @@ func main() {
         scanner := bufio.NewScanner(strings.NewReader(result))
         for scanner.Scan() {
             linex := scanner.Text()
-            if !(strings.HasPrefix(linex,"#") || len(linex)==0 || strings.HasPrefix(linex,"Comment:")) { fmt.Println(linex) }
+            if !(strings.HasPrefix(linex,"#") || len(linex)==0 || strings.HasPrefix(linex,"Comment:")) { 
+                switch Switch {
+                case "C":
+                    if (strings.HasPrefix(linex,"CIDR")) { fmt.Println(linex) }
+                case "R":
+                    //Do nothing, the Switch below will take care the intended output
+                case "NIL":
+                    fmt.Println(linex)
+                default:
+                    fmt.Println("Unrecognized switch!")
+                }
+            }
         }
-    
-        fmt.Println("\nReverse PTR Record: \t", addr)
+        switch Switch {
+            case "R":
+                fmt.Println("Reverse PTR Record: ", addr)
+            case "NIL":
+                fmt.Println("\nReverse PTR Record: ", addr)
+        }
         fmt.Println("")
         return
     }
@@ -193,10 +215,4 @@ type Contact struct {
 	Email        string `json:"email,omitempty"`
 	ReferralURL  string `json:"referral_url,omitempty"`
 }
-*/
-
-/* TODO
-- NILL as Verbose (v), Default = c
-- R = Reverse PTR record (for IP)
-- Check if can filter CIDR
 */

@@ -5,21 +5,21 @@ Return domain registrar info and resolved IP (or Reverse IP) using WHOIS DB and 
 The binary for MacOS (compiled on Sonoma 14.x) is included in this repository.
 
 ```
-whois-check v1.2
-Last Update: 12 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)
+whois-check v1.3
+Last Update: 13 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)
 
 Usage for Single IP query:
     whois-check [ipv4 | ipv6 | domain.com]
 
 Optional_Switch for output format (FOR DOMAIN ONLY):
     S   Show only resolved IP & domain status
-    c   Show only essential information
+    v   Show verbose (more) information
     N   Show only resolved IP, registrant name, organization & country
     T   Show only created, updated and expiration date
 
 Example:
    whois-check twitter.com
-   whois-check google.com c
+   whois-check google.com v
    whois-check youtube.com N
    whois-check netflix.com T
 
@@ -31,7 +31,7 @@ Output:
     Expiration:                2028-09-14T04:00:00Z
 
 Example:
-    % whois-check twitter.com c
+    % whois-check twitter.com
    
 Output:
     Resolved IP:               104.244.42.65

@@ -21,13 +21,13 @@ func IsIpv6Net(host string) bool {
 
 func main() {
     
-    Banner := "whois-check v1.2\n"
-    Banner = Banner + "Last Update: 12 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n\n"
+    Banner := "whois-check v1.3\n"
+    Banner = Banner + "Last Update: 13 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n\n"
     Banner = Banner + "Usage for Single IP query:\n"
     Banner = Banner + "    whois-check [ipv4 | ipv6 | domain.com]\n\n"
     Banner = Banner + "Optional_Switch for output format (FOR DOMAIN ONLY):\n"
     Banner = Banner + "    S   Show only resolved IP & domain status\n"    
-    Banner = Banner + "    c   Show only essential information\n"
+    Banner = Banner + "    v   Show verbose (more) information\n"
     Banner = Banner + "    N   Show only resolved IP, registrant name, organization & country\n"
     Banner = Banner + "    T   Show only created, updated and expiration date\n\n"
     Banner = Banner + "Example:\n"
@@ -98,26 +98,7 @@ func main() {
     switch Switch {
     case "S":
         fmt.Println("Status: \t\t\t", resultP.Domain.Status)        
-    case "c":
-        if resultP.Domain.DNSSec { fmt.Println("DNSSec: \t\t\t", resultP.Domain.DNSSec) }
-        if len(resultP.Domain.CreatedDate) > 0 { fmt.Println("Created: \t\t\t", resultP.Domain.CreatedDate) }
-        if len(resultP.Domain.UpdatedDate) > 0 { fmt.Println("Updated: \t\t\t", resultP.Domain.UpdatedDate) }    
-        if len(resultP.Domain.ExpirationDate) > 0 { fmt.Println("Expiration: \t\t\t", resultP.Domain.ExpirationDate) }
-        if len(resultP.Domain.NameServers) > 0 { fmt.Println("Name Servers: \t\t\t", resultP.Domain.NameServers) }
-        if len(resultP.Domain.WhoisServer) > 0 { fmt.Println("Whois Server: \t\t\t", resultP.Domain.WhoisServer) }
-        if len(resultP.Registrar.Name) > 0 { fmt.Println("Registrar Name: \t\t", resultP.Registrar.Name) }
-        if len(resultP.Registrant.Name) > 0 { fmt.Println("Registrant Name: \t\t", resultP.Registrant.Name) }
-        if len(resultP.Registrant.Organization) > 0 { fmt.Println("Registrant Organization: \t", resultP.Registrant.Organization) }
-        if len(resultP.Registrant.Country) > 0 { fmt.Println("Registrant Country: \t\t", resultP.Registrant.Country) }
-    case "N":
-        if len(resultP.Registrant.Name) > 0 { fmt.Println("Registrant Name: \t\t", resultP.Registrant.Name) }
-        if len(resultP.Registrant.Organization) > 0 { fmt.Println("Registrant Organization: \t", resultP.Registrant.Organization) }
-        if len(resultP.Registrant.Country) > 0 { fmt.Println("Registrant Country: \t\t", resultP.Registrant.Country) }
-    case "T":
-        if len(resultP.Domain.CreatedDate) > 0 { fmt.Println("Created: \t\t\t", resultP.Domain.CreatedDate) }
-        if len(resultP.Domain.UpdatedDate) > 0 { fmt.Println("Updated: \t\t\t", resultP.Domain.UpdatedDate) }    
-        if len(resultP.Domain.ExpirationDate) > 0 { fmt.Println("Expiration: \t\t\t", resultP.Domain.ExpirationDate) }
-    case "NIL":
+    case "v":
         fmt.Println("Status: \t\t\t", resultP.Domain.Status)
         if resultP.Domain.DNSSec { fmt.Println("DNSSec: \t\t\t", resultP.Domain.DNSSec) }
         if len(resultP.Domain.CreatedDate) > 0 { fmt.Println("Created: \t\t\t", resultP.Domain.CreatedDate) }
@@ -141,6 +122,25 @@ func main() {
         if len(resultP.Technical.Phone) > 0 { fmt.Println("Technical Phone: \t\t", resultP.Technical.Phone) }  
         if len(resultP.Administrative.Name) > 0 { fmt.Println("Administrative Name: \t\t", resultP.Administrative.Name) }
         if len(resultP.Administrative.Email) > 0 { fmt.Println("Administrative Email: \t\t", resultP.Administrative.Email) }
+    case "N":
+        if len(resultP.Registrant.Name) > 0 { fmt.Println("Registrant Name: \t\t", resultP.Registrant.Name) }
+        if len(resultP.Registrant.Organization) > 0 { fmt.Println("Registrant Organization: \t", resultP.Registrant.Organization) }
+        if len(resultP.Registrant.Country) > 0 { fmt.Println("Registrant Country: \t\t", resultP.Registrant.Country) }
+    case "T":
+        if len(resultP.Domain.CreatedDate) > 0 { fmt.Println("Created: \t\t\t", resultP.Domain.CreatedDate) }
+        if len(resultP.Domain.UpdatedDate) > 0 { fmt.Println("Updated: \t\t\t", resultP.Domain.UpdatedDate) }    
+        if len(resultP.Domain.ExpirationDate) > 0 { fmt.Println("Expiration: \t\t\t", resultP.Domain.ExpirationDate) }
+    case "NIL":
+        if resultP.Domain.DNSSec { fmt.Println("DNSSec: \t\t\t", resultP.Domain.DNSSec) }
+        if len(resultP.Domain.CreatedDate) > 0 { fmt.Println("Created: \t\t\t", resultP.Domain.CreatedDate) }
+        if len(resultP.Domain.UpdatedDate) > 0 { fmt.Println("Updated: \t\t\t", resultP.Domain.UpdatedDate) }    
+        if len(resultP.Domain.ExpirationDate) > 0 { fmt.Println("Expiration: \t\t\t", resultP.Domain.ExpirationDate) }
+        if len(resultP.Domain.NameServers) > 0 { fmt.Println("Name Servers: \t\t\t", resultP.Domain.NameServers) }
+        if len(resultP.Domain.WhoisServer) > 0 { fmt.Println("Whois Server: \t\t\t", resultP.Domain.WhoisServer) }
+        if len(resultP.Registrar.Name) > 0 { fmt.Println("Registrar Name: \t\t", resultP.Registrar.Name) }
+        if len(resultP.Registrant.Name) > 0 { fmt.Println("Registrant Name: \t\t", resultP.Registrant.Name) }
+        if len(resultP.Registrant.Organization) > 0 { fmt.Println("Registrant Organization: \t", resultP.Registrant.Organization) }
+        if len(resultP.Registrant.Country) > 0 { fmt.Println("Registrant Country: \t\t", resultP.Registrant.Country) }        
     default:
         fmt.Println("Unrecognized switch!")
     }
@@ -193,4 +193,10 @@ type Contact struct {
 	Email        string `json:"email,omitempty"`
 	ReferralURL  string `json:"referral_url,omitempty"`
 }
+*/
+
+/* TODO
+- NILL as Verbose (v), Default = c
+- R = Reverse PTR record (for IP)
+- Check if can filter CIDR
 */

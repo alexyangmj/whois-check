@@ -6,7 +6,6 @@ import (
     "net"
     "bufio"
     "strings"
-    //"regexp"
 	"github.com/likexian/whois"
 	"github.com/likexian/whois-parser"
     
@@ -44,17 +43,13 @@ func main() {
     Banner = Banner + "   whois-check 142.251.12.94 R\n\n"
     Banner = Banner + "Usage for Bulk IP query:\n"
     Banner = Banner + "   whois-check inputfile.txt\n"
-    Banner = Banner + "   (the input filename must be STRICTLY inputfile.txt. Lines must only a IPv4/6 and domain name)\n\n"
-    Banner = Banner + "Example:\n"
-    Banner = Banner + "   whois-check input.txt\n"
+    Banner = Banner + "   (the input filename must be STRICTLY inputfile.txt. Lines must only a IPv4/6 and domain name)\n"
 
     var input       string
     var isFile      bool   = false
     var Switch      string = "NIL"
     
     errline := 1
-    
-    //domainRegex := regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9-]*\.[a-zA-Z]{2,}$`)
     
     defer func() {
         if r := recover(); r != nil {
@@ -77,7 +72,6 @@ func main() {
     if input == "inputfile.txt" {
         isFile = true
     } else {
-        //if !(IsIpv4Net(input) || IsIpv6Net(input) || domainRegex.MatchString(input)) { 
         if !(IsIpv4Net(input) || IsIpv6Net(input) || strings.Count(input, ".") > 0) { 
             fmt.Println(Banner)
             return

@@ -36,10 +36,17 @@ Usage for Bulk IP query:
    (the input filename must be STRICTLY inputfile.txt. Lines must only a IPv4/6 and domain name)
 
 Example:
-   whois-check input.txt
+    % whois-check inputfile.txt
 
+Output:
+    9.9.9.9,dns9.quad9.net.,Quad9 (CLEAN-97),2023-04-24,CH
+    142.251.12.94,se-in-f94.1e100.net.,Google LLC (GOGL),2019-10-31,US
+    2607:f8b0:4003:c00::6a,nd-in-f106.1e100.net.,Google LLC (GOGL),2019-10-31,US
+    netflix.com,52.214.181.141,,2023-10-09T11:01:36Z,US
+    twitter.com,104.244.42.129,Twitter, Inc.,2024-01-17T06:10:05Z,US
+    yahoo.com.sg,76.223.84.192,YAHOO ASSETS LLC,2024-03-22T17:40:19Z,
 
-Usage Example:
+Example:
     %  whois-check 20.231.239.246 C
 
 Output:

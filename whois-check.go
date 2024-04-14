@@ -6,6 +6,7 @@ import (
     "net"
     "bufio"
     "strings"
+    //"regexp"
 	"github.com/likexian/whois"
 	"github.com/likexian/whois-parser"
     
@@ -21,8 +22,8 @@ func IsIpv6Net(host string) bool {
 
 func main() {
     
-    Banner := "whois-check v1.4\n"
-    Banner = Banner + "Last Update: 13 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n\n"
+    Banner := "whois-check v2.0\n"
+    Banner = Banner + "Last Update: 14 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n\n"
     Banner = Banner + "Usage for Single IP query:\n"
     Banner = Banner + "    whois-check [ipv4 | ipv6 | domain.com]\n\n"
     Banner = Banner + "Optional_Switch for output format (FOR DOMAIN ONLY):\n"
@@ -37,22 +38,27 @@ func main() {
     Banner = Banner + "   whois-check netflix.com T\n\n"
     Banner = Banner + "Optional_Switch for output format (FOR IPv4/v6 ONLY):\n"
     Banner = Banner + "    C   Show only CIDR\n"    
-    Banner = Banner + "    R   Show only reverse PTR record\n\n"
+    Banner = Banner + "    R   Show only Cannonical Name\n\n"
     Banner = Banner + "Example:\n"
     Banner = Banner + "   whois-check 20.231.239.246 C\n"
-    Banner = Banner + "   whois-check 142.251.12.94 R\n"
-    
-    //Banner = Banner + "Usage for Bulk IP query:\n"
-    //Banner = Banner + "   whois-check [inputfile.txt] --> file extension must be .txt\n\n"
-    //Banner = Banner + "Example:\n"
-    //Banner = Banner + "   whois-check input.txt\n"
+    Banner = Banner + "   whois-check 142.251.12.94 R\n\n"
+    Banner = Banner + "Usage for Bulk IP query:\n"
+    Banner = Banner + "   whois-check inputfile.txt\n"
+    Banner = Banner + "   (the input filename must be STRICTLY inputfile.txt. Lines must only a IPv4/6 and domain name)\n\n"
+    Banner = Banner + "Example:\n"
+    Banner = Banner + "   whois-check input.txt\n"
 
     var input       string
+    var isFile      bool   = false
     var Switch      string = "NIL"
+    
+    errline := 1
+    
+    //domainRegex := regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9-]*\.[a-zA-Z]{2,}$`)
     
     defer func() {
         if r := recover(); r != nil {
-            fmt.Println("Program Terminated Abnormally! probably caught a bug.")
+            fmt.Println("Can't process further, likely a bug")
         }
     }()
 
@@ -68,11 +74,103 @@ func main() {
         Switch  = os.Args[2] 
     }
     
-    if !(strings.Contains(input, ".") || strings.Contains(input, ":")) {
-        fmt.Println(Banner)
+    if input == "inputfile.txt" {
+        isFile = true
+    } else {
+        //if !(IsIpv4Net(input) || IsIpv6Net(input) || domainRegex.MatchString(input)) { 
+        if !(IsIpv4Net(input) || IsIpv6Net(input) || strings.Count(input, ".") > 0) { 
+            fmt.Println(Banner)
+            return
+        }
+    }
+
+    if isFile {
+        file, err := os.Open(input)
+        
+       if err != nil {
+          fmt.Println("failed opening file: %s", err)
+            return
+       }
+        
+        scanner := bufio.NewScanner(file)
+        scanner.Split(bufio.ScanLines)
+
+        for scanner.Scan() {
+            txtlines := scanner.Text()
+            if len(txtlines) == 0 { continue }
+            if !(IsIpv4Net(txtlines) || IsIpv6Net(txtlines) || strings.Count(txtlines, ".") > 0) {
+                fmt.Println("Error: line [", errline, "] IP/Domain: [", txtlines, "] - check if the format is correct")
+                errline++
+                continue
+            }
+        
+            result, err := whois.Whois(txtlines)
+            if err != nil {
+                fmt.Println ("Error: ", err)
+                return
+            }
+            
+            var xsip, xaddr, xOrg, xUpdated, xCountry   string
+            xsip = txtlines
+            
+            if IsIpv4Net(txtlines) || IsIpv6Net (txtlines) {
+                addr, _ := net.LookupAddr(txtlines)
+                xaddr = addr[0]
+
+                scanner := bufio.NewScanner(strings.NewReader(result))
+                
+                for scanner.Scan() {
+                    linex := scanner.Text()
+                    if !(strings.HasPrefix(linex,"#") || len(linex)==0 || strings.HasPrefix(linex,"Comment:")) {
+                        if (strings.HasPrefix(linex,"Organization")) {
+                            trimmedString := strings.TrimSpace(linex)
+                            parts := strings.Split(trimmedString, ":")
+                            trimmedString = strings.TrimSpace(parts[1])
+                            xOrg = trimmedString
+                        }
+                        if (strings.HasPrefix(linex,"Updated")) {
+                            trimmedString := strings.TrimSpace(linex)
+                            parts := strings.Split(trimmedString, ":")
+                            trimmedString = strings.TrimSpace(parts[1])
+                            xUpdated = trimmedString
+                        }
+                        if (strings.HasPrefix(linex,"Country")) {
+                            trimmedString := strings.TrimSpace(linex)
+                            parts := strings.Split(trimmedString, ":")
+                            trimmedString = strings.TrimSpace(parts[1])
+                            xCountry = trimmedString
+                        }
+                    }
+                }
+                fmt.Println(xsip + "," + xaddr + "," + xOrg + "," + xUpdated + "," + xCountry)
+                errline++
+                continue
+            }
+
+            resultP, err := whoisparser.Parse(result)
+            if err != nil {
+                fmt.Println ("Error: ", err)
+                return
+            }
+
+            var ddom, dip, dRegName, dUpdated, dCountry   string
+            
+            ip, _ := net.ResolveIPAddr("ip4", txtlines)
+
+            ddom = txtlines
+            dip  = ip.String()
+        
+            if len(resultP.Domain.UpdatedDate) > 0 { dUpdated = resultP.Domain.UpdatedDate }    
+            if len(resultP.Registrant.Name) > 0 { dRegName = resultP.Registrant.Name }
+            if len(resultP.Registrant.Country) > 0 { dCountry = resultP.Registrant.Country }
+            
+            fmt.Println(ddom + "," + dip + "," + dRegName + "," + dUpdated + "," + dCountry)
+            errline++
+        }
+        file.Close()
         return
     }
-    
+
     result, err := whois.Whois(input)
     if err != nil {
         fmt.Println ("Error: ", err)
@@ -100,9 +198,9 @@ func main() {
         }
         switch Switch {
             case "R":
-                fmt.Println("Reverse PTR Record: ", addr)
+                fmt.Println("Cannonical Name: ", addr)
             case "NIL":
-                fmt.Println("\nReverse PTR Record: ", addr)
+                fmt.Println("\nCannonical Name: ", addr)
         }
         fmt.Println("")
         return
@@ -167,52 +265,3 @@ func main() {
         fmt.Println("Unrecognized switch!")
     }
 }
-
-/*
-// WhoisInfo storing domain whois info
-type WhoisInfo struct {
-	Domain         *Domain  `json:"domain,omitempty"`
-	Registrar      *Contact `json:"registrar,omitempty"`
-	Registrant     *Contact `json:"registrant,omitempty"`
-	Administrative *Contact `json:"administrative,omitempty"`
-	Technical      *Contact `json:"technical,omitempty"`
-	Billing        *Contact `json:"billing,omitempty"`
-}
-
-// Domain storing domain name info
-type Domain struct {
-	ID                   string     `json:"id,omitempty"`
-	Domain               string     `json:"domain,omitempty"`
-	Punycode             string     `json:"punycode,omitempty"`
-	Name                 string     `json:"name,omitempty"`
-	Extension            string     `json:"extension,omitempty"`
-	WhoisServer          string     `json:"whois_server,omitempty"`
-	Status               []string   `json:"status,omitempty"`
-	NameServers          []string   `json:"name_servers,omitempty"`
-	DNSSec               bool       `json:"dnssec,omitempty"`
-	CreatedDate          string     `json:"created_date,omitempty"`
-	CreatedDateInTime    *time.Time `json:"created_date_in_time,omitempty"`
-	UpdatedDate          string     `json:"updated_date,omitempty"`
-	UpdatedDateInTime    *time.Time `json:"updated_date_in_time,omitempty"`
-	ExpirationDate       string     `json:"expiration_date,omitempty"`
-	ExpirationDateInTime *time.Time `json:"expiration_date_in_time,omitempty"`
-}
-
-// Contact storing domain contact info
-type Contact struct {
-	ID           string `json:"id,omitempty"`
-	Name         string `json:"name,omitempty"`
-	Organization string `json:"organization,omitempty"`
-	Street       string `json:"street,omitempty"`
-	City         string `json:"city,omitempty"`
-	Province     string `json:"province,omitempty"`
-	PostalCode   string `json:"postal_code,omitempty"`
-	Country      string `json:"country,omitempty"`
-	Phone        string `json:"phone,omitempty"`
-	PhoneExt     string `json:"phone_ext,omitempty"`
-	Fax          string `json:"fax,omitempty"`
-	FaxExt       string `json:"fax_ext,omitempty"`
-	Email        string `json:"email,omitempty"`
-	ReferralURL  string `json:"referral_url,omitempty"`
-}
-*/

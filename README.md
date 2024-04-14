@@ -1,12 +1,12 @@
 # whois-check
 
-Return domain registrar info and resolved IP (or Reverse IP) using WHOIS DB and Li Kexian's whois library
+Return domain registrar info and resolved IP (or Cannonical Name) using WHOIS DB and Li Kexian's whois library
 
 The binary for MacOS (compiled on Sonoma 14.x) is included in this repository.
 
 ```
-whois-check v1.4
-Last Update: 13 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)
+whois-check v2.0
+Last Update: 14 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)
 
 Usage for Single IP query:
     whois-check [ipv4 | ipv6 | domain.com]
@@ -19,15 +19,27 @@ Optional_Switch for output format (FOR DOMAIN ONLY):
 
 Example:
    whois-check twitter.com
-   whois-check google.com v
+   whois-check google.com c
    whois-check youtube.com N
    whois-check netflix.com T
 
 Optional_Switch for output format (FOR IPv4/v6 ONLY):
     C   Show only CIDR
-    R   Show only reverse PTR record
+    R   Show only Cannonical Name
 
 Example:
+   whois-check 20.231.239.246 C
+   whois-check 142.251.12.94 R
+
+Usage for Bulk IP query:
+   whois-check inputfile.txt
+   (the input filename must be STRICTLY inputfile.txt. Lines must only a IPv4/6 and domain name)
+
+Example:
+   whois-check input.txt
+
+
+Usage Example:
     %  whois-check 20.231.239.246 C
 
 Output:

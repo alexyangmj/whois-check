@@ -108,7 +108,8 @@ func main() {
             xsip = txtlines
             
             if IsIpv4Net(txtlines) || IsIpv6Net (txtlines) {
-                addr, _ := net.LookupAddr(txtlines)
+                addr, err := net.LookupAddr(txtlines)
+                if err != nil { fmt.Println ("Error: ", err) }
                 xaddr = addr[0]
 
                 scanner := bufio.NewScanner(strings.NewReader(result))
@@ -149,7 +150,8 @@ func main() {
 
             var ddom, dip, dRegName, dUpdated, dCountry   string
             
-            ip, _ := net.ResolveIPAddr("ip4", txtlines)
+            ip, err := net.ResolveIPAddr("ip4", txtlines)
+            if err != nil { fmt.Println ("Error: ", err) }
 
             ddom = txtlines
             dip  = ip.String()
@@ -172,7 +174,8 @@ func main() {
     }
     
     if IsIpv4Net(input) || IsIpv6Net (input) {
-        addr, _ := net.LookupAddr(input)
+        addr, err := net.LookupAddr(input)
+        if err != nil { fmt.Println ("Error: ", err) }
     
         scanner := bufio.NewScanner(strings.NewReader(result))
         for scanner.Scan() {
@@ -207,9 +210,7 @@ func main() {
     }
     
     ip, err := net.ResolveIPAddr("ip4", input)
-    if err != nil {
-        fmt.Println ("Error: ", err)
-    }
+    if err != nil { fmt.Println ("Error: ", err) }
     fmt.Println("Resolved IP: \t\t\t", ip)
         
     switch Switch {

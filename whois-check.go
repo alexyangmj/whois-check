@@ -21,8 +21,8 @@ func IsIpv6Net(host string) bool {
 
 func main() {
     
-    Banner := "whois-check v2.0\n"
-    Banner = Banner + "Last Update: 14 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n\n"
+    Banner := "whois-check v2.0a\n"
+    Banner = Banner + "Last Update: 15 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n\n"
     Banner = Banner + "Usage for Single IP query:\n"
     Banner = Banner + "    whois-check [ipv4 | ipv6 | domain.com]\n\n"
     Banner = Banner + "Optional_Switch for output format (FOR DOMAIN ONLY):\n"
@@ -181,20 +181,23 @@ func main() {
                 switch Switch {
                 case "C":
                     if (strings.HasPrefix(linex,"CIDR")) { fmt.Println(linex) }
-                case "R":
+                //case "R":
                     //Do nothing, the Switch below will take care the intended output
                 case "NIL":
                     fmt.Println(linex)
-                default:
-                    fmt.Println("Unrecognized switch!")
+
                 }
             }
         }
         switch Switch {
+            case "C":
+                //Do nothing
             case "R":
                 fmt.Println("Cannonical Name: ", addr)
             case "NIL":
                 fmt.Println("\nCannonical Name: ", addr)
+            default:
+                fmt.Println("Unrecognized switch!")
         }
         fmt.Println("")
         return

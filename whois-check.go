@@ -21,7 +21,7 @@ func IsIpv6Net(host string) bool {
 
 func main() {
     
-    Banner := "whois-check v2.0b\n"
+    Banner := "whois-check v2.0c\n"
     Banner = Banner + "Last Update: 15 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n\n"
     Banner = Banner + "Usage for Single IP query:\n"
     Banner = Banner + "    whois-check [ipv4 | ipv6 | domain.com]\n\n"
@@ -99,10 +99,7 @@ func main() {
             }
         
             result, err := whois.Whois(txtlines)
-            if err != nil {
-                fmt.Println ("Error: ", err)
-                return
-            }
+            if err != nil { fmt.Println ("Error: ", err) }
             
             var xsip, xaddr, xOrg, xUpdated, xCountry   string
             xsip = txtlines
@@ -143,10 +140,7 @@ func main() {
             }
 
             resultP, err := whoisparser.Parse(result)
-            if err != nil {
-                fmt.Println ("Error: ", err)
-                return
-            }
+            if err != nil { fmt.Println ("Error: ", err) }
 
             var ddom, dip, dRegName, dUpdated, dCountry   string
             
@@ -168,10 +162,7 @@ func main() {
     }
 
     result, err := whois.Whois(input)
-    if err != nil {
-        fmt.Println ("Error: ", err)
-        return
-    }
+    if err != nil { fmt.Println ("Error: ", err) }
     
     if IsIpv4Net(input) || IsIpv6Net (input) {
         addr, err := net.LookupAddr(input)
@@ -204,10 +195,7 @@ func main() {
     }
 
     resultP, err := whoisparser.Parse(result)
-    if err != nil {
-        fmt.Println ("Error: ", err)
-        return
-    }
+    if err != nil { fmt.Println ("Error: ", err) }
     
     ip, err := net.ResolveIPAddr("ip4", input)
     if err != nil { fmt.Println ("Error: ", err) }

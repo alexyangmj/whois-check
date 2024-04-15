@@ -21,7 +21,7 @@ func IsIpv6Net(host string) bool {
 
 func main() {
     
-    Banner := "whois-check v2.0d\n"
+    Banner := "whois-check v2.1\n"
     Banner = Banner + "Last Update: 15 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n\n"
     Banner = Banner + "Usage for Single IP query:\n"
     Banner = Banner + "    whois-check [ipv4 | ipv6 | domain.com]\n\n"
@@ -142,7 +142,6 @@ func main() {
             resultP, err := whoisparser.Parse(result)
             if err != nil {
                 fmt.Println ("[" + txtlines +"] -- make sure this is first level domain")
-                //fmt.Println ("Error: ", err)
                 continue
             }
 
@@ -204,7 +203,6 @@ func main() {
     resultP, err := whoisparser.Parse(result)
     if err != nil { 
         fmt.Println ("[" + input +"] -- make sure this is first level domain (e.g.: amazon.com)")
-        fmt.Println ("Error: ", err)
         return
     }
     
@@ -212,54 +210,58 @@ func main() {
     if err != nil { fmt.Println ("Error: ", err) }
     
     fmt.Println("Resolved IP: \t\t\t", ip)
-        
-    switch Switch {
-    case "S":
-        fmt.Println("Status: \t\t\t", resultP.Domain.Status)        
-    case "v":
-        fmt.Println("Status: \t\t\t", resultP.Domain.Status)
-        if resultP.Domain.DNSSec { fmt.Println("DNSSec: \t\t\t", resultP.Domain.DNSSec) }
-        if len(resultP.Domain.CreatedDate) > 0 { fmt.Println("Created: \t\t\t", resultP.Domain.CreatedDate) }
-        if len(resultP.Domain.UpdatedDate) > 0 { fmt.Println("Updated: \t\t\t", resultP.Domain.UpdatedDate) }    
-        if len(resultP.Domain.ExpirationDate) > 0 { fmt.Println("Expiration: \t\t\t", resultP.Domain.ExpirationDate) }
-        if len(resultP.Domain.ID) > 0 { fmt.Println("ID: \t\t\t\t", resultP.Domain.ID) }
-        if len(resultP.Domain.NameServers) > 0 { fmt.Println("Name Servers: \t\t\t", resultP.Domain.NameServers) }
-        if len(resultP.Domain.WhoisServer) > 0 { fmt.Println("Whois Server: \t\t\t", resultP.Domain.WhoisServer) }
-        if len(resultP.Registrar.Name) > 0 { fmt.Println("Registrar Name: \t\t", resultP.Registrar.Name) }
-        if len(resultP.Registrant.Name) > 0 { fmt.Println("Registrant Name: \t\t", resultP.Registrant.Name) }
-        if len(resultP.Registrant.Email) > 0 { fmt.Println("Registrant Email: \t\t", resultP.Registrant.Email) }
-        if len(resultP.Registrant.Phone) > 0 { fmt.Println("Registrant Phone: \t\t", resultP.Registrant.Phone) }
-        if len(resultP.Registrant.Organization) > 0 { fmt.Println("Registrant Organization: \t", resultP.Registrant.Organization) }
-        if len(resultP.Registrant.Street) > 0 { fmt.Println("Registrant Address: \t\t", resultP.Registrant.Street) }
-        if len(resultP.Registrant.City) > 0 { fmt.Println("Registrant City: \t\t", resultP.Registrant.City) }
-        if len(resultP.Registrant.Province) > 0 { fmt.Println("Registrant Province: \t\t", resultP.Registrant.Province) }    
-        if len(resultP.Registrant.Country) > 0 { fmt.Println("Registrant Country: \t\t", resultP.Registrant.Country) }
-        if len(resultP.Technical.PostalCode) > 0 { fmt.Println("Registrant Postal Code: \t", resultP.Registrant.PostalCode) }
-        if len(resultP.Technical.Name) > 0 { fmt.Println("Technical Name: \t\t", resultP.Technical.Name) }
-        if len(resultP.Technical.Email) > 0 { fmt.Println("Technical Email: \t\t", resultP.Technical.Email) }
-        if len(resultP.Technical.Phone) > 0 { fmt.Println("Technical Phone: \t\t", resultP.Technical.Phone) }  
-        if len(resultP.Administrative.Name) > 0 { fmt.Println("Administrative Name: \t\t", resultP.Administrative.Name) }
-        if len(resultP.Administrative.Email) > 0 { fmt.Println("Administrative Email: \t\t", resultP.Administrative.Email) }
-    case "N":
-        if len(resultP.Registrant.Name) > 0 { fmt.Println("Registrant Name: \t\t", resultP.Registrant.Name) }
-        if len(resultP.Registrant.Organization) > 0 { fmt.Println("Registrant Organization: \t", resultP.Registrant.Organization) }
-        if len(resultP.Registrant.Country) > 0 { fmt.Println("Registrant Country: \t\t", resultP.Registrant.Country) }
-    case "T":
-        if len(resultP.Domain.CreatedDate) > 0 { fmt.Println("Created: \t\t\t", resultP.Domain.CreatedDate) }
-        if len(resultP.Domain.UpdatedDate) > 0 { fmt.Println("Updated: \t\t\t", resultP.Domain.UpdatedDate) }    
-        if len(resultP.Domain.ExpirationDate) > 0 { fmt.Println("Expiration: \t\t\t", resultP.Domain.ExpirationDate) }
-    case "NIL":
-        if resultP.Domain.DNSSec { fmt.Println("DNSSec: \t\t\t", resultP.Domain.DNSSec) }
-        if len(resultP.Domain.CreatedDate) > 0 { fmt.Println("Created: \t\t\t", resultP.Domain.CreatedDate) }
-        if len(resultP.Domain.UpdatedDate) > 0 { fmt.Println("Updated: \t\t\t", resultP.Domain.UpdatedDate) }    
-        if len(resultP.Domain.ExpirationDate) > 0 { fmt.Println("Expiration: \t\t\t", resultP.Domain.ExpirationDate) }
-        if len(resultP.Domain.NameServers) > 0 { fmt.Println("Name Servers: \t\t\t", resultP.Domain.NameServers) }
-        if len(resultP.Domain.WhoisServer) > 0 { fmt.Println("Whois Server: \t\t\t", resultP.Domain.WhoisServer) }
-        if len(resultP.Registrar.Name) > 0 { fmt.Println("Registrar Name: \t\t", resultP.Registrar.Name) }
-        if len(resultP.Registrant.Name) > 0 { fmt.Println("Registrant Name: \t\t", resultP.Registrant.Name) }
-        if len(resultP.Registrant.Organization) > 0 { fmt.Println("Registrant Organization: \t", resultP.Registrant.Organization) }
-        if len(resultP.Registrant.Country) > 0 { fmt.Println("Registrant Country: \t\t", resultP.Registrant.Country) }        
-    default:
-        fmt.Println("Unrecognized switch!")
+
+    if !( strings.HasSuffix(input, ".uk") || strings.HasSuffix(input, ".id") || strings.HasSuffix(input, ".jp") || strings.HasSuffix(input, ".th") || strings.HasSuffix(input, ".kr") || strings.HasSuffix(input, ".nz") || strings.HasSuffix(input, ".edu") ) {
+        switch Switch {
+        case "S":
+            fmt.Println("Status: \t\t\t", resultP.Domain.Status)        
+        case "v":
+            fmt.Println("Status: \t\t\t", resultP.Domain.Status)
+            if resultP.Domain.DNSSec { fmt.Println("DNSSec: \t\t\t", resultP.Domain.DNSSec) }
+            if len(resultP.Domain.CreatedDate) > 0 { fmt.Println("Created: \t\t\t", resultP.Domain.CreatedDate) }
+            if len(resultP.Domain.UpdatedDate) > 0 { fmt.Println("Updated: \t\t\t", resultP.Domain.UpdatedDate) }    
+            if len(resultP.Domain.ExpirationDate) > 0 { fmt.Println("Expiration: \t\t\t", resultP.Domain.ExpirationDate) }
+            if len(resultP.Domain.ID) > 0 { fmt.Println("ID: \t\t\t\t", resultP.Domain.ID) }
+            if len(resultP.Domain.NameServers) > 0 { fmt.Println("Name Servers: \t\t\t", resultP.Domain.NameServers) }
+            if len(resultP.Domain.WhoisServer) > 0 { fmt.Println("Whois Server: \t\t\t", resultP.Domain.WhoisServer) }
+            if len(resultP.Registrar.Name) > 0 { fmt.Println("Registrar Name: \t\t", resultP.Registrar.Name) }
+            if len(resultP.Registrant.Name) > 0 { fmt.Println("Registrant Name: \t\t", resultP.Registrant.Name) }
+            if len(resultP.Registrant.Email) > 0 { fmt.Println("Registrant Email: \t\t", resultP.Registrant.Email) }
+            if len(resultP.Registrant.Phone) > 0 { fmt.Println("Registrant Phone: \t\t", resultP.Registrant.Phone) }
+            if len(resultP.Registrant.Organization) > 0 { fmt.Println("Registrant Organization: \t", resultP.Registrant.Organization) }
+            if len(resultP.Registrant.Street) > 0 { fmt.Println("Registrant Address: \t\t", resultP.Registrant.Street) }
+            if len(resultP.Registrant.City) > 0 { fmt.Println("Registrant City: \t\t", resultP.Registrant.City) }
+            if len(resultP.Registrant.Province) > 0 { fmt.Println("Registrant Province: \t\t", resultP.Registrant.Province) }    
+            if len(resultP.Registrant.Country) > 0 { fmt.Println("Registrant Country: \t\t", resultP.Registrant.Country) }
+            if len(resultP.Technical.PostalCode) > 0 { fmt.Println("Registrant Postal Code: \t", resultP.Registrant.PostalCode) }
+            if len(resultP.Technical.Name) > 0 { fmt.Println("Technical Name: \t\t", resultP.Technical.Name) }
+            if len(resultP.Technical.Email) > 0 { fmt.Println("Technical Email: \t\t", resultP.Technical.Email) }
+            if len(resultP.Technical.Phone) > 0 { fmt.Println("Technical Phone: \t\t", resultP.Technical.Phone) }  
+            if len(resultP.Administrative.Name) > 0 { fmt.Println("Administrative Name: \t\t", resultP.Administrative.Name) }
+            if len(resultP.Administrative.Email) > 0 { fmt.Println("Administrative Email: \t\t", resultP.Administrative.Email) }
+        case "N":
+            if len(resultP.Registrant.Name) > 0 { fmt.Println("Registrant Name: \t\t", resultP.Registrant.Name) }
+            if len(resultP.Registrant.Organization) > 0 { fmt.Println("Registrant Organization: \t", resultP.Registrant.Organization) }
+            if len(resultP.Registrant.Country) > 0 { fmt.Println("Registrant Country: \t\t", resultP.Registrant.Country) }
+        case "T":
+            if len(resultP.Domain.CreatedDate) > 0 { fmt.Println("Created: \t\t\t", resultP.Domain.CreatedDate) }
+            if len(resultP.Domain.UpdatedDate) > 0 { fmt.Println("Updated: \t\t\t", resultP.Domain.UpdatedDate) }    
+            if len(resultP.Domain.ExpirationDate) > 0 { fmt.Println("Expiration: \t\t\t", resultP.Domain.ExpirationDate) }
+        case "NIL":
+            if resultP.Domain.DNSSec { fmt.Println("DNSSec: \t\t\t", resultP.Domain.DNSSec) }
+            if len(resultP.Domain.CreatedDate) > 0 { fmt.Println("Created: \t\t\t", resultP.Domain.CreatedDate) }
+            if len(resultP.Domain.UpdatedDate) > 0 { fmt.Println("Updated: \t\t\t", resultP.Domain.UpdatedDate) }    
+            if len(resultP.Domain.ExpirationDate) > 0 { fmt.Println("Expiration: \t\t\t", resultP.Domain.ExpirationDate) }
+            if len(resultP.Domain.NameServers) > 0 { fmt.Println("Name Servers: \t\t\t", resultP.Domain.NameServers) }
+            if len(resultP.Domain.WhoisServer) > 0 { fmt.Println("Whois Server: \t\t\t", resultP.Domain.WhoisServer) }
+            if len(resultP.Registrar.Name) > 0 { fmt.Println("Registrar Name: \t\t", resultP.Registrar.Name) }
+            if len(resultP.Registrant.Name) > 0 { fmt.Println("Registrant Name: \t\t", resultP.Registrant.Name) }
+            if len(resultP.Registrant.Organization) > 0 { fmt.Println("Registrant Organization: \t", resultP.Registrant.Organization) }
+            if len(resultP.Registrant.Country) > 0 { fmt.Println("Registrant Country: \t\t", resultP.Registrant.Country) }        
+        default:
+            fmt.Println("Unrecognized switch!")
+        }
+    } else {
+        fmt.Println(result)
     }
 }

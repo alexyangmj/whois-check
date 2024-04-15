@@ -141,8 +141,8 @@ func main() {
 
             resultP, err := whoisparser.Parse(result)
             if err != nil {
-                fmt.Print ("[" + input +"] -- ")
-                fmt.Println ("Error: ", err)
+                fmt.Println ("[" + txtlines +"] -- make sure this is first level domain")
+                //fmt.Println ("Error: ", err)
                 continue
             }
 
@@ -203,7 +203,7 @@ func main() {
 
     resultP, err := whoisparser.Parse(result)
     if err != nil { 
-        fmt.Print ("[" + input +"] -- ")
+        fmt.Println ("[" + input +"] -- make sure this is first level domain (e.g.: amazon.com)")
         fmt.Println ("Error: ", err)
         return
     }

@@ -140,7 +140,10 @@ func main() {
             }
 
             resultP, err := whoisparser.Parse(result)
-            if err != nil { fmt.Println ("Error: ", err) }
+            if err != nil { 
+                fmt.Println ("Error: ", err)
+                continue
+            }
 
             var ddom, dip, dRegName, dUpdated, dCountry   string
             
@@ -162,7 +165,10 @@ func main() {
     }
 
     result, err := whois.Whois(input)
-    if err != nil { fmt.Println ("Error: ", err) }
+    if err != nil { 
+        fmt.Println ("Error: ", err)
+        return
+    }
     
     if IsIpv4Net(input) || IsIpv6Net (input) {
         addr, err := net.LookupAddr(input)
@@ -199,6 +205,7 @@ func main() {
     
     ip, err := net.ResolveIPAddr("ip4", input)
     if err != nil { fmt.Println ("Error: ", err) }
+    
     fmt.Println("Resolved IP: \t\t\t", ip)
         
     switch Switch {

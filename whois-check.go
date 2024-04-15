@@ -21,7 +21,7 @@ func IsIpv6Net(host string) bool {
 
 func main() {
     
-    Banner := "whois-check v2.1\n"
+    Banner := "whois-check v2.2\n"
     Banner = Banner + "Last Update: 15 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n\n"
     Banner = Banner + "Usage for Single IP query:\n"
     Banner = Banner + "    whois-check [ipv4 | ipv6 | domain.com]\n\n"
@@ -97,7 +97,7 @@ func main() {
                 errline++
                 continue
             }
-        
+
             result, err := whois.Whois(txtlines)
             if err != nil { fmt.Println ("Error: ", err) }
             
@@ -139,6 +139,12 @@ func main() {
                 continue
             }
 
+            if ( strings.HasSuffix(txtlines, ".uk") || strings.HasSuffix(txtlines, ".id") || strings.HasSuffix(txtlines, ".jp") || strings.HasSuffix(txtlines, ".th") || strings.HasSuffix(txtlines, ".kr") || strings.HasSuffix(txtlines, ".nz") || strings.HasSuffix(txtlines, ".edu") ) {
+                fmt.Println("[" + txtlines +"]: can't bulk lookup.")
+                errline++
+                continue
+            }
+            
             resultP, err := whoisparser.Parse(result)
             if err != nil {
                 fmt.Println ("[" + txtlines +"] -- make sure this is first level domain")
@@ -152,7 +158,7 @@ func main() {
 
             ddom = txtlines
             dip  = ip.String()
-        
+
             if len(resultP.Domain.UpdatedDate) > 0 { dUpdated = resultP.Domain.UpdatedDate }    
             if len(resultP.Registrant.Name) > 0 { dRegName = resultP.Registrant.Name }
             if len(resultP.Registrant.Country) > 0 { dCountry = resultP.Registrant.Country }

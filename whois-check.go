@@ -181,11 +181,8 @@ func main() {
                 switch Switch {
                 case "C":
                     if (strings.HasPrefix(linex,"CIDR")) { fmt.Println(linex) }
-                //case "R":
-                    //Do nothing, the Switch below will take care the intended output
                 case "NIL":
                     fmt.Println(linex)
-
                 }
             }
         }

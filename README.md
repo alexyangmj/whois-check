@@ -5,7 +5,7 @@ Return domain registrar info and resolved IP (or Cannonical Name) using WHOIS DB
 The binary for MacOS (compiled on Sonoma 14.x) is included in this repository.
 
 ```
-whois-check v2.0a
+whois-check v2.0b
 Last Update: 15 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)
 
 Usage for Single IP query:

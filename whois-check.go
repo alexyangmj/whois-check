@@ -21,7 +21,7 @@ func IsIpv6Net(host string) bool {
 
 func main() {
     
-    Banner := "whois-check v2.0a\n"
+    Banner := "whois-check v2.0b\n"
     Banner = Banner + "Last Update: 15 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n\n"
     Banner = Banner + "Usage for Single IP query:\n"
     Banner = Banner + "    whois-check [ipv4 | ipv6 | domain.com]\n\n"
@@ -206,7 +206,10 @@ func main() {
         return
     }
     
-    ip, _ := net.ResolveIPAddr("ip4", input)
+    ip, err := net.ResolveIPAddr("ip4", input)
+    if err != nil {
+        fmt.Println ("Error: ", err)
+    }
     fmt.Println("Resolved IP: \t\t\t", ip)
         
     switch Switch {

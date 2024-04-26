@@ -2,7 +2,7 @@
 
 Return domain registrar info and resolved IP (or Cannonical Name) using WHOIS DB and Li Kexian's whois library
 
-The binary for MacOS (compiled on Sonoma 14.x) is included in this repository.
+The binary for MacOS (compiled on Sonoma 14.x with Intel processor x86-64) is included in this repository.
 
 ```
 whois-check v2.2

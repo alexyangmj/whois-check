@@ -21,8 +21,8 @@ func IsIpv6Net(host string) bool {
 
 func main() {
     
-    Banner := "whois-check v2.2\n"
-    Banner = Banner + "Last Update: 15 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n\n"
+    Banner := "whois-check v2.2a\n"
+    Banner = Banner + "Last Update: 29 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)\n\n"
     Banner = Banner + "Usage for Single IP query:\n"
     Banner = Banner + "    whois-check [ipv4 | ipv6 | domain.com]\n\n"
     Banner = Banner + "Optional_Switch for output format (FOR DOMAIN ONLY):\n"
@@ -106,8 +106,11 @@ func main() {
             
             if IsIpv4Net(txtlines) || IsIpv6Net (txtlines) {
                 addr, err := net.LookupAddr(txtlines)
-                if err != nil { fmt.Println ("Error: ", err) }
-                xaddr = addr[0]
+                if err != nil { 
+                    xaddr = "No Cannoical Name"
+                } else {
+                    xaddr = addr[0]    
+                }
 
                 scanner := bufio.NewScanner(strings.NewReader(result))
                 

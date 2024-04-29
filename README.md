@@ -5,8 +5,8 @@ Return domain registrar info and resolved IP (or Cannonical Name) using WHOIS DB
 The binary for MacOS (compiled on Sonoma 14.x with Intel processor x86-64) is included in this repository.
 
 ```
-whois-check v2.2
-Last Update: 15 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)
+whois-check v2.2a
+Last Update: 29 Apr 2024, Alex Yang (https://linkedin.com/in/4yang)
 
 Usage for Single IP query:
     whois-check [ipv4 | ipv6 | domain.com]
